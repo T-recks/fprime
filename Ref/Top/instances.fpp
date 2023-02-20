@@ -176,6 +176,11 @@ module Ref {
 
   }
 
+  instance mathSender: Ref.MathSender base id 0xE00 \
+    queue size Default.queueSize \
+    stack size Default.stackSize \
+    priority 100
+
   # ----------------------------------------------------------------------
   # Queued component instances
   # ----------------------------------------------------------------------
@@ -216,6 +221,9 @@ module Ref {
     queue size Default.queueSize
 
   instance sendBuffComp: Ref.SendBuff base id 0x2600 \
+    queue size Default.queueSize
+
+  instance mathReceiver: Ref.MathReceiver base id 0x2700 \
     queue size Default.queueSize
 
   # ----------------------------------------------------------------------
@@ -344,5 +352,65 @@ module Ref {
   }
 
   instance systemResources: Svc.SystemResources base id 0x4B00
+
+  instance dtn: Ref.DTN base id 0x4C00 \
+    queue size Default.queueSize
+
+  instance framer: Svc.Framer base id 0x4D00 {
+
+    phase Fpp.ToCpp.Phases.configObjects """
+    Svc::FprimeFraming framing;
+    """
+
+    phase Fpp.ToCpp.Phases.configComponents """
+    framer.setup(ConfigObjects::framer::framing);
+    """
+
+  }
+
+  instance deframer: Svc.Deframer base id 0x4E00 {
+
+    phase Fpp.ToCpp.Phases.configObjects """
+    Svc::FprimeDeframing deframing;
+    """
+
+    phase Fpp.ToCpp.Phases.configComponents """
+    deframer.setup(ConfigObjects::deframer::deframing);
+    """
+
+  }
+
+  instance client: Drv.ByteStreamDriverModel base id 0x4F00 \
+    type "Drv::TcpClient" \
+    at "../../Drv/TcpClient/TcpClient.hpp" \
+  {
+
+    phase Fpp.ToCpp.Phases.configConstants """
+    enum {
+      PRIORITY = 100,
+      STACK_SIZE = Default::stackSize
+    };
+    """
+
+    phase Fpp.ToCpp.Phases.startTasks """
+    // Initialize socket server if and only if there is a valid specification
+    if (state.hostName != nullptr && state.portNumber != 0) {
+        Os::TaskString name("ReceiveTask");
+        // Uplink is configured for receive so a socket task is started
+        client.configure("127.0.0.1", 4556);
+        client.startSocketTask(
+            name,
+            true,
+            ConfigConstants::client::PRIORITY,
+            ConfigConstants::client::STACK_SIZE
+        );
+    }
+    """
+    
+    phase Fpp.ToCpp.Phases.freeThreads """
+    client.stopSocketTask();
+    (void) client.joinSocketTask(nullptr);
+    """
+  }
 
 }

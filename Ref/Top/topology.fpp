@@ -13,6 +13,8 @@ module Ref {
     enum Ports_StaticMemory {
       downlink
       uplink
+      framer
+      deframer
     }
 
   topology Ref {
@@ -29,10 +31,13 @@ module Ref {
     instance SG5
     instance blockDrv
     instance chanTlm
+    instance client
     instance cmdDisp
     instance cmdSeq
     instance comm
+    instance deframer
     instance downlink
+    instance dtn
     instance eventLogger
     instance fatalAdapter
     instance fatalHandler
@@ -40,7 +45,10 @@ module Ref {
     instance fileManager
     instance fileUplink
     instance fileUplinkBufferManager
+    instance framer
     instance linuxTime
+    instance mathSender
+    instance mathReceiver
     instance pingRcvr
     instance prmDb
     instance rateGroup1Comp
@@ -106,6 +114,8 @@ module Ref {
       rateGroup1Comp.RateGroupMemberOut[2] -> chanTlm.Run
       rateGroup1Comp.RateGroupMemberOut[3] -> fileDownlink.Run
       rateGroup1Comp.RateGroupMemberOut[4] -> systemResources.run
+      rateGroup1Comp.RateGroupMemberOut[5] -> mathReceiver.schedIn
+      # rateGroup1Comp.RateGroupMemberOut[6] -> dtn.schedIn
 
       # Rate group 2
       rateGroupDriverComp.CycleOut[Ports_RateGroups.rateGroup2] -> rateGroup2Comp.CycleIn
@@ -147,6 +157,44 @@ module Ref {
       uplink.bufferDeallocate -> fileUplinkBufferManager.bufferSendIn
       fileUplink.bufferSendOut -> fileUplinkBufferManager.bufferSendIn
 
+    }
+
+    connections dtn {
+      ##
+      # fromSocket
+      ##
+      client.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+      client.$recv -> deframer.framedIn
+      deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
+      # client.$recv -> dtn.fromSocket
+
+      ## deframer.bufferOut -> dtn.fromSocket
+      ## deframer.comOut -> dtn.fromSocket
+      ## cmdDisp.seqCmdStatus -> deframer.cmdResponseIn
+
+      ## deframer.bufferAllocate -> fileUplinkBufferManager.bufferGetCallee
+      ## deframer.bufferOut -> fileUplink.bufferSendIn
+      ## deframer.bufferDeallocate -> fileUplinkBufferManager.bufferSendIn
+      ## fileUplink.bufferSendOut -> fileUplinkBufferManager.bufferSendIn
+
+      ##
+      # toSocket
+      ##
+      # dtn.toSocket -> framer.bufferIn
+      dtn.toSocket -> framer.comIn
+      ## fileDownlink.bufferSendOut -> framer.bufferIn
+
+      framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
+      framer.framedOut -> client.send
+      ## framer.bufferDeallocate -> fileDownlink.bufferReturn
+
+      client.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
+
+    }
+
+    connections Math {
+      mathSender.mathOpOut -> mathReceiver.mathOpIn
+      mathReceiver.mathResultOut -> mathSender.mathResultIn
     }
 
   }
