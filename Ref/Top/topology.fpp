@@ -60,6 +60,7 @@ module Ref {
     instance staticMemory
     instance textLogger
     instance uplink
+    # instance server
     instance systemResources
 
     # ----------------------------------------------------------------------
@@ -160,37 +161,53 @@ module Ref {
     }
 
     connections dtn {
-      ##
-      # fromSocket
-      ##
-      client.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
-      client.$recv -> deframer.framedIn
-      deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
-      # client.$recv -> dtn.fromSocket
-
-      ## deframer.bufferOut -> dtn.fromSocket
-      ## deframer.comOut -> dtn.fromSocket
-      ## cmdDisp.seqCmdStatus -> deframer.cmdResponseIn
-
-      ## deframer.bufferAllocate -> fileUplinkBufferManager.bufferGetCallee
-      ## deframer.bufferOut -> fileUplink.bufferSendIn
-      ## deframer.bufferDeallocate -> fileUplinkBufferManager.bufferSendIn
-      ## fileUplink.bufferSendOut -> fileUplinkBufferManager.bufferSendIn
-
-      ##
-      # toSocket
-      ##
-      # dtn.toSocket -> framer.bufferIn
-      dtn.toSocket -> framer.comIn
-      ## fileDownlink.bufferSendOut -> framer.bufferIn
-
+      ## to
       framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
       framer.framedOut -> client.send
-      ## framer.bufferDeallocate -> fileDownlink.bufferReturn
 
       client.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
 
+      ## from
+      client.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+      client.$recv -> deframer.framedIn
+      deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
+
+      deframer.comOut -> cmdDisp.seqCmdBuff
+      cmdDisp.seqCmdStatus -> deframer.cmdResponseIn
     }
+    # connections dtn {
+    #   ##
+    #   # fromSocket
+    #   ##
+    #   client.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+    #   client.$recv -> deframer.framedIn
+    #   # server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+    #   # server.$recv -> deframer.framedIn
+    #   # deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
+    #   # client.$recv -> dtn.fromSocket
+
+    #   ## deframer.bufferOut -> dtn.fromSocket
+    #   # deframer.comOut -> dtn.fromSocket
+    #   ## cmdDisp.seqCmdStatus -> deframer.cmdResponseIn
+
+    #   ## deframer.bufferAllocate -> fileUplinkBufferManager.bufferGetCallee
+    #   ## deframer.bufferOut -> fileUplink.bufferSendIn
+    #   ## deframer.bufferDeallocate -> fileUplinkBufferManager.bufferSendIn
+    #   ## fileUplink.bufferSendOut -> fileUplinkBufferManager.bufferSendIn
+
+    #   ##
+    #   # toSocket
+    #   ##
+    #   # dtn.toSocket -> framer.bufferIn
+    #   dtn.toSocket -> framer.comIn
+    #   ## fileDownlink.bufferSendOut -> framer.bufferIn
+
+    #   framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
+    #   framer.framedOut -> client.send
+    #   ## framer.bufferDeallocate -> fileDownlink.bufferReturn
+
+    #   client.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
+    # }
 
     connections Math {
       mathSender.mathOpOut -> mathReceiver.mathOpIn

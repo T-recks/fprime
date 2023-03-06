@@ -5,6 +5,7 @@
 #include "Fw/Types/MallocAllocator.hpp"
 #include "Ref/Top/FppConstantsAc.hpp"
 #include "Svc/FramingProtocol/FprimeProtocol.hpp"
+#include "Svc/FramingProtocol/BundleProtocol.hpp"
 
 namespace Ref {
 

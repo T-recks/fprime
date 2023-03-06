@@ -12,6 +12,10 @@
 # 3. Local subdirectories: contains all deployment specific directory additions
 ####
 
+# DEBUG
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
 ##
 # Section 1: Basic Project Setup
 #

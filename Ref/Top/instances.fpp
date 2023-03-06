@@ -359,7 +359,7 @@ module Ref {
   instance framer: Svc.Framer base id 0x4D00 {
 
     phase Fpp.ToCpp.Phases.configObjects """
-    Svc::FprimeFraming framing;
+    Svc::BundleFraming framing;
     """
 
     phase Fpp.ToCpp.Phases.configComponents """
@@ -371,7 +371,7 @@ module Ref {
   instance deframer: Svc.Deframer base id 0x4E00 {
 
     phase Fpp.ToCpp.Phases.configObjects """
-    Svc::FprimeDeframing deframing;
+    Svc::BundleDeframing deframing;
     """
 
     phase Fpp.ToCpp.Phases.configComponents """
@@ -410,6 +410,41 @@ module Ref {
     phase Fpp.ToCpp.Phases.freeThreads """
     client.stopSocketTask();
     (void) client.joinSocketTask(nullptr);
+    """
+  }
+
+  instance server: Drv.ByteStreamDriverModel base id 0x5000 \
+    type "Drv::TcpServer" \
+    at "../../Drv/TcpServer/TcpServer.hpp" \
+  {
+
+    phase Fpp.ToCpp.Phases.configConstants """
+    enum {
+      PRIORITY = 100,
+      STACK_SIZE = Default::stackSize
+    };
+    """
+
+    phase Fpp.ToCpp.Phases.startTasks """
+    // Initialize socket server if and only if there is a valid specification
+    if (state.hostName != nullptr && state.portNumber != 0) {
+        Os::TaskString name("ReceiveTask");
+        // Downlink is configured for receive so a socket task is started
+        server.configure("127.0.0.1", 4558);
+        server.startup();
+        server.startSocketTask(
+            name,
+            true,
+            ConfigConstants::server::PRIORITY,
+            ConfigConstants::server::STACK_SIZE
+        );
+    }
+    """
+    
+    phase Fpp.ToCpp.Phases.freeThreads """
+    server.shutdown();
+    server.stopSocketTask();
+    (void) server.joinSocketTask(nullptr);
     """
   }
 

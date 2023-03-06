@@ -48,7 +48,12 @@ namespace Ref {
       //!
       void fromSocket_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
-          Fw::Buffer &fwBuffer 
+          Fw::ComBuffer &data, /*!< 
+      Buffer containing packet data
+      */
+          U32 context /*!< 
+      Call context value; meaning chosen by user
+      */
       );
 
       //! Handler implementation for sesend

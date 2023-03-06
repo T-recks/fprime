@@ -19,8 +19,8 @@ module Ref {
     sync input port sesend: Fw.BufferSend
 
     @ Bundles from TCP client
-    sync input port fromSocket: Fw.BufferSend
-    # sync input port fromSocket: Fw.Com
+    # sync input port fromSocket: Fw.BufferSend
+    sync input port fromSocket: Fw.Com
 
     # ----------------------------------------------------------------------
     # Special ports

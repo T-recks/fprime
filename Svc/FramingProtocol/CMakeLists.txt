@@ -10,6 +10,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/DeframingProtocol.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/FramingProtocol.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/FprimeProtocol.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BundleProtocol.cpp"
 )
 
 set(MOD_DEPS

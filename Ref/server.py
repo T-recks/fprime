@@ -1,4 +1,5 @@
 import socket
+import sys
 
 count = 0
 # localIP     = "127.0.0.1"
@@ -29,7 +30,6 @@ while(True):
 
         if message:
             count += 1
-            # clientMsg = "message: {}".format(message)
             clientMsg = "{}: {}".format(count, message)
             print(clientMsg)
     finally:
