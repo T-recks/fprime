@@ -29,12 +29,9 @@ void StcpFraming::frame(const U8* const data, const U32 size, Fw::ComPacket::Com
     StcpFrameHeader::TokenType total = real_data_size + StcpFrameHeader::SIZE;
     Fw::Buffer buffer = m_interface->allocate(total);
     Fw::SerializeBufferBase& serializer = buffer.getSerializeRepr();
-
     
     // Serialize data
     Fw::SerializeStatus status;
-
-
     
     status = serializer.serialize(real_data_size);
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
