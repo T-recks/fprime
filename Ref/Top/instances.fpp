@@ -341,6 +341,9 @@ module Ref {
 
   instance uplink: Svc.Deframer base id 0x4A00 {
 
+    # phase Fpp.ToCpp.Phases.configObjects """
+    # Svc::StcpDeframing deframing;
+    # """
     phase Fpp.ToCpp.Phases.configObjects """
     Svc::FprimeDeframing deframing;
     """
@@ -358,6 +361,9 @@ module Ref {
 
   instance framer: Svc.Framer base id 0x4D00 {
 
+    # phase Fpp.ToCpp.Phases.configObjects """
+    # Svc::StcpFraming framing;
+    # """
     phase Fpp.ToCpp.Phases.configObjects """
     Svc::FprimeFraming framing;
     """
