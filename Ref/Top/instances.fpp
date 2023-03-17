@@ -359,6 +359,9 @@ module Ref {
   instance outduct: Dtn.Outduct base id 0x4C00 \
     queue size Default.queueSize
 
+  instance induct: Dtn.Induct base id 0x5200 \
+    queue size Default.queueSize
+
   instance framer: Svc.Framer base id 0x4D00 {
 
     phase Fpp.ToCpp.Phases.configObjects """
@@ -413,6 +416,41 @@ module Ref {
     phase Fpp.ToCpp.Phases.freeThreads """
     client.stopSocketTask();
     (void) client.joinSocketTask(nullptr);
+    """
+  }
+
+  instance server: Drv.ByteStreamDriverModel base id 0x5100 \
+    type "Drv::TcpServer" \
+    at "../../Drv/TcpServer/TcpServer.hpp" \
+  {
+
+    phase Fpp.ToCpp.Phases.configConstants """
+    enum {
+      PRIORITY = 100,
+      STACK_SIZE = Default::stackSize
+    };
+    """
+
+    phase Fpp.ToCpp.Phases.startTasks """
+    // Initialize socket server if and only if there is a valid specification
+    if (state.hostName != nullptr && state.portNumber != 0) {
+        Os::TaskString name("ReceiveTask");
+        // Uplink is configured for receive so a socket task is started
+        server.configure("127.0.0.1", 4558);
+        server.startup();
+        server.startSocketTask(
+            name,
+            true,
+            ConfigConstants::client::PRIORITY,
+            ConfigConstants::client::STACK_SIZE
+        );
+    }
+    """
+    
+    phase Fpp.ToCpp.Phases.freeThreads """
+    server.shutdown();
+    server.stopSocketTask();
+    (void) server.joinSocketTask(nullptr);
     """
   }
 

@@ -58,10 +58,10 @@ module Dtn {
     # General ports
     # ----------------------------------------------------------------------
     @ Output port for data received
-    output port $recv: Fw.BufferGet
+    output port $recv: Fw.Com
 
     @ Bundles from TCP server
-    async input port fromSocket: Fw.BufferSend
+    async input port fromSocket: Fw.Com
     # sync input port fromSocket: Fw.Com
 
     # ----------------------------------------------------------------------
