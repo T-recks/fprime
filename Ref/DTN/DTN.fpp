@@ -1,4 +1,4 @@
-module Ref {
+module Dtn {
 
   passive component BpParser {
   }
@@ -53,33 +53,50 @@ module Ref {
     
   }
 
-  # active component Induct {
-  #   # ----------------------------------------------------------------------
-  #   # General ports
-  #   # ----------------------------------------------------------------------
-    # @ Output port for data received
-    # output port recv: Fw.BufferGet
+  active component Induct {
+    # ----------------------------------------------------------------------
+    # General ports
+    # ----------------------------------------------------------------------
+    @ Output port for data received
+    output port $recv: Fw.BufferGet
 
-    # @ Bundles from TCP client
-    # async input port fromSocket: Fw.BufferSend
-    # # sync input port fromSocket: Fw.Com    
-  #   # ----------------------------------------------------------------------
-  #   # Events
-  #   # ----------------------------------------------------------------------
+    @ Bundles from TCP server
+    async input port fromSocket: Fw.BufferSend
+    # sync input port fromSocket: Fw.Com
 
-  #   @ Bundle received
-  #   event BUNDLE_RECEIVED \
-  #     severity activity high \
-  #     format "Bundle received"
+    # ----------------------------------------------------------------------
+    # Special ports
+    # ----------------------------------------------------------------------
+    
+    @ Event
+    event port eventOut
 
-  #   # ----------------------------------------------------------------------
-  #   # Telemetry
-  #   # ----------------------------------------------------------------------
+    @ Telemetry
+    telemetry port tlmOut
 
-  #   @ Bundles received
-  #   telemetry RECV: U32
+    @ Text event
+    text event port textEventOut
 
-  # }
+    @ Time get
+    time get port timeGetOut
+    
+    # ----------------------------------------------------------------------
+    # Events
+    # ----------------------------------------------------------------------
+
+    @ Bundle received
+    event BUNDLE_RECEIVED \
+      severity activity high \
+      format "Bundle received"
+
+    # ----------------------------------------------------------------------
+    # Telemetry
+    # ----------------------------------------------------------------------
+
+    @ Bundles received
+    telemetry RECV: U32
+
+  }
 
   active component Outduct {
     # ----------------------------------------------------------------------

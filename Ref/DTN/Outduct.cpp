@@ -8,7 +8,7 @@
 #include <Ref/DTN/Outduct.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 
-namespace Ref {
+namespace Dtn {
 
   // ----------------------------------------------------------------------
   // Construction, initialization, and destruction

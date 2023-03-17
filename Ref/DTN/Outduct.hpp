@@ -9,7 +9,7 @@
 
 #include "Ref/DTN/OutductComponentAc.hpp"
 
-namespace Ref {
+namespace Dtn {
 
   class Outduct :
     public OutductComponentBase

@@ -9,7 +9,7 @@
 
 #include "Ref/DTN/BpSerializerComponentAc.hpp"
 
-namespace Ref {
+namespace Dtn {
 
   class BpSerializer :
     public BpSerializerComponentBase
