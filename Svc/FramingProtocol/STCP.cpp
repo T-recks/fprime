@@ -64,8 +64,7 @@ DeframingProtocol::DeframingStatus StcpDeframing::deframe(Types::CircularBuffer&
         return DeframingProtocol::DEFRAMING_MORE_NEEDED;
     }
     // Read size from header
-    Fw::SerializeStatus status = ring.peek(start, 0);
-    status = ring.peek(size, sizeof(StcpFrameHeader::TokenType));
+    Fw::SerializeStatus status = ring.peek(size, 0);
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     const U32 maxU32 = std::numeric_limits<U32>::max();
     if (size > maxU32 - (StcpFrameHeader::SIZE)) {
