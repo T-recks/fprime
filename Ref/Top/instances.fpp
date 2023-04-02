@@ -401,7 +401,7 @@ module Ref {
     phase Fpp.ToCpp.Phases.startTasks """
     // Initialize socket server if and only if there is a valid specification
     if (state.hostName != nullptr && state.portNumber != 0) {
-        Os::TaskString name("ReceiveTask");
+        Os::TaskString name("SendTask");
         // Uplink is configured for receive so a socket task is started
         client.configure("127.0.0.1", 4556);
         client.startSocketTask(
@@ -436,13 +436,13 @@ module Ref {
     if (state.hostName != nullptr && state.portNumber != 0) {
         Os::TaskString name("ReceiveTask");
         // Uplink is configured for receive so a socket task is started
-        server.configure("127.0.0.1", 4558);
+        server.configure("0.0.0.0", 4558);
         server.startup();
         server.startSocketTask(
             name,
             true,
-            ConfigConstants::client::PRIORITY,
-            ConfigConstants::client::STACK_SIZE
+            ConfigConstants::server::PRIORITY,
+            ConfigConstants::server::STACK_SIZE
         );
     }
     """

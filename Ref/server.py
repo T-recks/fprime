@@ -5,6 +5,7 @@ count = 0
 # localIP     = "10.105.86.160"
 localIP     = ""
 localPort   = 4556
+# localPort   = 4558
 bufferSize  = 1024
 
 msgFromServer       = "Hello TCP Client"
