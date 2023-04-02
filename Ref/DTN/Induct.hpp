@@ -39,7 +39,8 @@ namespace Dtn {
       ~Induct();
 
     PRIVATE:
-
+      int m_count = 0;
+      
       // ----------------------------------------------------------------------
       // Handler implementations for user-defined typed input ports
       // ----------------------------------------------------------------------

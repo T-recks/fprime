@@ -48,7 +48,11 @@ namespace Dtn {
         U32 context
     )
   {
-    // TODO
+      // Emit telemetry and events
+      this->log_ACTIVITY_HI_BUNDLE_RECEIVED();
+
+      this->m_count++;
+      this->tlmWrite_RECV(m_count);
   }
 
 } // end namespace Dtn
