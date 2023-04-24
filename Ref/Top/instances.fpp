@@ -471,9 +471,9 @@ instance server: Drv.ByteStreamDriverModel base id 0x5100 \
     if (state.hostName != nullptr && state.portNumber != 0) {
         Os::TaskString name("ReceiveTask");
         // Uplink is configured for receive so a socket task is started
-        //server.configureRecv("0.0.0.0", 7132);
-        server.configureRecv("0.0.0.0", 8888);
-        // server.startup();
+        server.configureRecv("0.0.0.0", 7132);
+        //server.configureRecv("0.0.0.0", 8888);
+        //server.startup();
         server.startSocketTask(
             name,
             true,

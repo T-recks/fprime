@@ -32,7 +32,7 @@ module Ref {
     instance blockDrv
     instance bpserializer
     instance chanTlm
-    instance client
+    # instance client
     instance cmdDisp
     instance cmdSeq
     instance comm
@@ -59,7 +59,7 @@ module Ref {
     instance rateGroupDriverComp
     instance recvBuffComp
     instance sendBuffComp
-    # instance server
+    instance server
     instance staticMemory
     instance textLogger
     instance uplink
@@ -162,68 +162,48 @@ module Ref {
 
     }
 
-    # connections dtnIn {
+    connections dtnIn {
+      ##
+      # fromSocket
+      ##
+      server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+      server.$recv -> induct.fromSocket
+      #   server.$recv -> deframer.framedIn
+      induct.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
+
+      ##
+      # toSocket
+      ##
+      # bpserializer.out -> induct.send
+      # deframer.comOut -> induct.fromSocket
+
+      # framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
+      # framer.framedOut -> server.send
+
+      server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
+
+    }
+    
+    # connections dtnOut {
     #   ##
     #   # fromSocket
     #   ##
-    #   server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
-    #   server.$recv -> deframer.framedIn
+    #   client.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+    #   client.$recv -> deframer.framedIn
     #   deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
 
     #   ##
     #   # toSocket
     #   ##
-    #   # bpserializer.out -> induct.send
-    #   deframer.comOut -> induct.fromSocket
+    #   bpserializer.out -> outduct.send
+    #   outduct.toSocket -> framer.comIn
 
-    #   # framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
-    #   # framer.framedOut -> server.send
+    #   framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
+    #   framer.framedOut -> client.send
 
-    #   server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
-
-    # }
-
-    # connections dtnIn {
-    #   ##
-    #   # fromSocket
-    #   ##
-    #   server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
-    #   server.$recv -> induct.fromSocket
-    #   induct.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
-
-    #   ##
-    #   # toSocket
-    #   ##
-    #   # bpserializer.out -> induct.send
-    #   # deframer.comOut -> induct.fromSocket
-
-    #   # framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
-    #   # framer.framedOut -> server.send
-
-    #   server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
+    #   client.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
 
     # }
-    
-    connections dtnOut {
-      ##
-      # fromSocket
-      ##
-      client.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
-      client.$recv -> deframer.framedIn
-      deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
-
-      ##
-      # toSocket
-      ##
-      bpserializer.out -> outduct.send
-      outduct.toSocket -> framer.comIn
-
-      framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
-      framer.framedOut -> client.send
-
-      client.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
-
-    }
 
     connections Math {
       mathSender.mathOpOut -> mathReceiver.mathOpIn
