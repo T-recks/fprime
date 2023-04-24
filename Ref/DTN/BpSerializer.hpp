@@ -46,7 +46,7 @@ namespace Dtn {
 
       //! Implementation for SEND_DUMMY command handler
       //! Send a bundle of dummy data
-      void SEND_DUMMY_cmdHandler(
+      void SEND_HELLO_cmdHandler(
           const FwOpcodeType opCode, /*!< The opcode*/
           const U32 cmdSeq /*!< The command sequence number*/
       );

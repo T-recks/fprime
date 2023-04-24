@@ -30,7 +30,6 @@ namespace Dtn {
       //! Initialize object Induct
       //!
       void init(
-          const NATIVE_INT_TYPE queueDepth, /*!< The queue depth*/
           const NATIVE_INT_TYPE instance = 0 /*!< The instance number*/
       );
 
@@ -40,7 +39,7 @@ namespace Dtn {
 
     PRIVATE:
       int m_count = 0;
-      
+
       // ----------------------------------------------------------------------
       // Handler implementations for user-defined typed input ports
       // ----------------------------------------------------------------------
@@ -49,12 +48,8 @@ namespace Dtn {
       //!
       void fromSocket_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
-          Fw::ComBuffer &data, /*!< 
-      Buffer containing packet data
-      */
-          U32 context /*!< 
-      Call context value; meaning chosen by user
-      */
+          Fw::Buffer &recvBuffer, 
+          const Drv::RecvStatus &recvStatus 
       );
 
 

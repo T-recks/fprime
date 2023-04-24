@@ -49,11 +49,14 @@ module Dtn {
     # ----------------------------------------------------------------------
 
     @ Send a bundle of dummy data
-    async command SEND_DUMMY
+    async command SEND_HELLO
+
+    #@ Do a math operation
+    # async command SEND_MESSAGE(msg: string @< The message to send)
     
   }
 
-  active component Induct {
+  passive component Induct {
     # ----------------------------------------------------------------------
     # General ports
     # ----------------------------------------------------------------------
@@ -61,8 +64,11 @@ module Dtn {
     output port $recv: Fw.Com
 
     @ Bundles from TCP server
-    async input port fromSocket: Fw.Com
+    guarded input port fromSocket: Drv.ByteStreamRecv
     # sync input port fromSocket: Fw.Com
+
+    @ Port for deallocating buffers received on framedIn.
+    output port deallocate: Fw.BufferSend
 
     # ----------------------------------------------------------------------
     # Special ports
@@ -88,6 +94,10 @@ module Dtn {
     event BUNDLE_RECEIVED \
       severity activity high \
       format "Bundle received"
+
+    event BUNDLE_ERROR \
+      severity activity high \
+      format "Bundle error"
 
     # ----------------------------------------------------------------------
     # Telemetry

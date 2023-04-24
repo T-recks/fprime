@@ -182,6 +182,27 @@ module Ref {
     #   server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
 
     # }
+
+    # connections dtnIn {
+    #   ##
+    #   # fromSocket
+    #   ##
+    #   server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+    #   server.$recv -> induct.fromSocket
+    #   induct.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
+
+    #   ##
+    #   # toSocket
+    #   ##
+    #   # bpserializer.out -> induct.send
+    #   # deframer.comOut -> induct.fromSocket
+
+    #   # framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
+    #   # framer.framedOut -> server.send
+
+    #   server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
+
+    # }
     
     connections dtnOut {
       ##
