@@ -30,7 +30,6 @@ module Ref {
     instance SG4
     instance SG5
     instance blockDrv
-    # instance bpserializer
     instance sender
     instance chanTlm
     instance client
@@ -60,7 +59,6 @@ module Ref {
     instance rateGroupDriverComp
     instance recvBuffComp
     instance sendBuffComp
-    # instance server
     instance staticMemory
     instance textLogger
     instance uplink
@@ -119,7 +117,6 @@ module Ref {
       rateGroup1Comp.RateGroupMemberOut[3] -> fileDownlink.Run
       rateGroup1Comp.RateGroupMemberOut[4] -> systemResources.run
       rateGroup1Comp.RateGroupMemberOut[5] -> mathReceiver.schedIn
-      # rateGroup1Comp.RateGroupMemberOut[6] -> dtn.schedIn
 
       # Rate group 2
       rateGroupDriverComp.CycleOut[Ports_RateGroups.rateGroup2] -> rateGroup2Comp.CycleIn
@@ -163,48 +160,6 @@ module Ref {
 
     }
 
-    # connections dtnIn {
-    #   ##
-    #   # fromSocket
-    #   ##
-    #   server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
-    #   server.$recv -> deframer.framedIn
-    #   deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
-
-    #   ##
-    #   # toSocket
-    #   ##
-    #   # bpserializer.out -> induct.send
-    #   deframer.comOut -> induct.fromSocket
-
-    #   # framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
-    #   # framer.framedOut -> server.send
-
-    #   server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
-
-    # }
-
-    # connections dtnIn {
-    #   ##
-    #   # fromSocket
-    #   ##
-    #   server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
-    #   server.$recv -> induct.fromSocket
-    #   induct.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
-
-    #   ##
-    #   # toSocket
-    #   ##
-    #   # bpserializer.out -> induct.send
-    #   # deframer.comOut -> induct.fromSocket
-
-    #   # framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
-    #   # framer.framedOut -> server.send
-
-    #   server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
-
-    # }
-    
     connections dtnOut {
       ##
       # fromSocket

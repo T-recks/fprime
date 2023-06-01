@@ -419,41 +419,6 @@ module Ref {
     """
   }
 
-  # instance server: Drv.ByteStreamDriverModel base id 0x5100 \
-  #   type "Drv::TcpServer" \
-  #   at "../../Drv/TcpServer/TcpServer.hpp" \
-  # {
-
-  #   phase Fpp.ToCpp.Phases.configConstants """
-  #   enum {
-  #     PRIORITY = 100,
-  #     STACK_SIZE = Default::stackSize
-  #   };
-  #   """
-
-  #   phase Fpp.ToCpp.Phases.startTasks """
-  #   // Initialize socket server if and only if there is a valid specification
-  #   if (state.hostName != nullptr && state.portNumber != 0) {
-  #       Os::TaskString name("ReceiveTask");
-  #       // Uplink is configured for receive so a socket task is started
-  #       server.configure("0.0.0.0", 7132);
-  #       server.startup();
-  #       server.startSocketTask(
-  #           name,
-  #           true,
-  #           ConfigConstants::server::PRIORITY,
-  #           ConfigConstants::server::STACK_SIZE
-  #       );
-  #   }
-  #   """
-    
-  #   phase Fpp.ToCpp.Phases.freeThreads """
-  #   server.shutdown();
-  #   server.stopSocketTask();
-  #   (void) server.joinSocketTask(nullptr);
-  #   """
-  # }
-
 instance server: Drv.ByteStreamDriverModel base id 0x5100 \
     type "Drv::UdpComponentImpl" \
     at "../../Drv/Udp/UdpComponentImpl.hpp" \

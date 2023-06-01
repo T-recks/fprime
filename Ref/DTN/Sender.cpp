@@ -8,8 +8,6 @@
 #include <Ref/DTN/Sender.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 #include <string>
-// #include "boost/filesystem.hpp"
-// #include <filesystem>
 #include <dirent.h>
 #include <iostream>
 #include <limits.h>       //For PATH_MAX
@@ -53,7 +51,7 @@ namespace Dtn {
         const U32 cmdSeq
     )
   {
-      U8 data[] = {0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x0A};
+    U8 data[] = {0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x0A};
     Fw::ComBuffer msg(data, sizeof(data));
     this->out_out(0, msg, 0);
     this->cmdResponse_out(opCode,cmdSeq,Fw::CmdResponse::OK);
@@ -77,7 +75,6 @@ namespace Dtn {
       dp = opendir("/home/tim/files");
       if (dp != nullptr) {
           while ((entry = readdir(dp))) {
-              // len = strlen(entry->d_name);
               len = 0;
               strcpy(path, "/home/tim/files/");
               if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) {
@@ -89,21 +86,17 @@ namespace Dtn {
                       fprintf(stderr, "Error : Failed to open entry file - %s\n", strerror(errno));
                   }
 
-                  /* Doing some struf with entry_file : */
+                  /* Doing some stuff with entry file : */
                   /* For example use fgets */
                   while (fgets(buffer, 1024, entry_file) != NULL)
                   {
-                      /* Use fprintf or fwrite to write some stuff into common_file*/
-                      // len++;
                   }
 
                   /* When you finish with the file, close it */
                   fclose(entry_file);
                   remove(path);
 
-                  // memcpy(data, entry->d_name, len);
                   memcpy(data, buffer, strlen(buffer));
-                  // memcpy(data, path, strlen(path));
                   Fw::ComBuffer msg(data, strlen(buffer));
                   this->out_out(0, msg, 0);
               }
