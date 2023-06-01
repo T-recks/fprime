@@ -3,7 +3,7 @@ module Dtn {
   passive component BpParser {
   }
 
-  active component BpSerializer {
+  active component Sender {
     # ----------------------------------------------------------------------
     # General ports
     # ----------------------------------------------------------------------
@@ -51,8 +51,8 @@ module Dtn {
     @ Send a bundle of dummy data
     async command SEND_HELLO
 
-    #@ Do a math operation
-    # async command SEND_MESSAGE(msg: string @< The message to send)
+    #@ Send files
+    async command SEND_FILES
     
   }
 

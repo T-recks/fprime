@@ -55,7 +55,7 @@ bool StcpDeframing::validate(Types::CircularBuffer& ring, U32 size) {
 }
 
 DeframingProtocol::DeframingStatus StcpDeframing::deframe(Types::CircularBuffer& ring, U32& needed) {
-    StcpFrameHeader::TokenType start = 0;
+    // StcpFrameHeader::TokenType start = 0;
     StcpFrameHeader::TokenType size = 0;
     FW_ASSERT(m_interface != nullptr);
     // Check for header or ask for more data

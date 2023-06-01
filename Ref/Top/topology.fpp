@@ -30,7 +30,8 @@ module Ref {
     instance SG4
     instance SG5
     instance blockDrv
-    instance bpserializer
+    # instance bpserializer
+    instance sender
     instance chanTlm
     instance client
     instance cmdDisp
@@ -215,7 +216,7 @@ module Ref {
       ##
       # toSocket
       ##
-      bpserializer.out -> outduct.send
+      sender.out -> outduct.send
       outduct.toSocket -> framer.comIn
 
       framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]

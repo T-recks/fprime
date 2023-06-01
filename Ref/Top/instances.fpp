@@ -353,7 +353,7 @@ module Ref {
 
   instance systemResources: Svc.SystemResources base id 0x4B00
 
-  instance bpserializer: Dtn.BpSerializer base id 0x5000 \
+  instance sender: Dtn.Sender base id 0x5000 \
     queue size Default.queueSize
   
   instance outduct: Dtn.Outduct base id 0x4C00 \
