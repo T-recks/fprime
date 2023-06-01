@@ -38,7 +38,6 @@ namespace Dtn {
       ~Induct();
 
     PRIVATE:
-      int m_count = 0;
 
       // ----------------------------------------------------------------------
       // Handler implementations for user-defined typed input ports
@@ -48,8 +47,12 @@ namespace Dtn {
       //!
       void fromSocket_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
-          Fw::Buffer &recvBuffer, 
-          const Drv::RecvStatus &recvStatus 
+          Fw::ComBuffer &data, /*!< 
+      Buffer containing packet data
+      */
+          U32 context /*!< 
+      Call context value; meaning chosen by user
+      */
       );
 
 

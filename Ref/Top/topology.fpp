@@ -166,21 +166,23 @@ module Ref {
       ##
       # fromSocket
       ##
-      server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
-      server.$recv -> induct.fromSocket
-      #   server.$recv -> deframer.framedIn
-      induct.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
+      # server.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+      ## server.$recv -> induct.fromSocket
+      # server.$recv -> deframer.framedIn
+      # deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
+      ## induct.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
 
       ##
       # toSocket
       ##
-      # bpserializer.out -> induct.send
-      # deframer.comOut -> induct.fromSocket
+      ## bpserializer.out -> induct.send
+      ## deframer.comOut -> induct.fromSocket
+      ## deframer.bufferOut -> induct.fromSocket
 
-      # framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
-      # framer.framedOut -> server.send
+      ## framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
+      ## framer.framedOut -> server.send
 
-      server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
+      # server.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
 
     }
     

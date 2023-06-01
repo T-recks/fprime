@@ -64,8 +64,8 @@ module Dtn {
     output port $recv: Fw.Com
 
     @ Bundles from TCP server
-    guarded input port fromSocket: Drv.ByteStreamRecv
-    # sync input port fromSocket: Fw.Com
+    # guarded input port fromSocket: Drv.ByteStreamRecv
+    guarded input port fromSocket: Fw.Com
 
     @ Port for deallocating buffers received on framedIn.
     output port deallocate: Fw.BufferSend

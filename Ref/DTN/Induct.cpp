@@ -44,37 +44,29 @@ namespace Dtn {
   void Induct ::
     fromSocket_handler(
         const NATIVE_INT_TYPE portNum,
-        Fw::Buffer &recvBuffer,
-        const Drv::RecvStatus &recvStatus
+        Fw::ComBuffer &data,
+        U32 context
     )
   {
-    // std::cout << "BUFFER" << std::endl;
-    U8* data;
-    std::ofstream file;
+      // std::cout << "BUFFER" << std::endl;
+      std::ofstream file;
     
-    if (recvStatus.e == Drv::RecvStatus::RECV_OK) {
       // Emit telemetry and events
       this->log_ACTIVITY_HI_BUNDLE_RECEIVED();
 
-      this->m_count++;
-      this->tlmWrite_RECV(m_count);
+      // this->m_count++;
+      // this->tlmWrite_RECV(m_count);
 
       // print buffer data
-      data = recvBuffer.getData();
-
       file.open("bundle-log.txt", std::ios::app);
-      file.write((const char*)data, recvBuffer.getSize());
-      file.put('\n');
+      file.write((const char*)data.getBuffAddr(), data.getBuffCapacity());
+      // file.put('\n');
       file.close();
       
       // for (int i = 0; i < recvBuffer.getSize(); i++) {
       //     std::cout << data[i];
       // }
       // std::cout << std::endl;
-    } else {
-      this->log_ACTIVITY_HI_BUNDLE_ERROR();
-    }
-    deallocate_out(0, recvBuffer);
   
   }
 
